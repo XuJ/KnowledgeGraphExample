@@ -4,13 +4,11 @@
 # @Author  : Gan
 # @File    : to_neo4j.py
 
-
 import pandas as pd
 import sys
 from neo4j.v1 import GraphDatabase, basic_auth
 from kgraph import EventChangeKG, create_vertex_from_off_line_relation
 # from graph_gene.core.kgraph import EventChangeKG
-
 
 data = pd.read_csv('data/change.csv', encoding='utf8')
 
@@ -25,7 +23,8 @@ vertex_dict = id_list.set_index('company_name').to_dict()['bbd_qyxx_id']
 
 event_change_kg = EventChangeKG(data, vertex_dict, add_ba=False)
 
-driver = GraphDatabase.driver("bolt://localhost", auth=basic_auth(user="neo4j", password="123456"))
+driver = GraphDatabase.driver(
+    "bolt://localhost", auth=basic_auth(user="neo4j", password="123456"))
 
 # folder = r'E:\neo4j\change_event_txs\import'
 folder = r'C:/Users/john/Documents/Neo4j/python_test/import'

@@ -13,9 +13,10 @@ id_list2 = data.loc[data['destination_isperson'] == 0, 'destination_bbd_id']
 
 name_list = pd.concat([id_list1, id_list2], ignore_index=True)
 name_list.drop_duplicates(inplace=True)
-name_list.to_csv('./KnowlegeGraphExample/data/company_bbd_id.csv', index=False, encoding='utf8')
-
-
+name_list.to_csv(
+    './KnowlegeGraphExample/data/company_bbd_id.csv',
+    index=False,
+    encoding='utf8')
 
 from graph_gene.core import common
 
