@@ -6,8 +6,10 @@ from neo4j.v1 import GraphDatabase, basic_auth
 driver = GraphDatabase.driver("bolt://localhost", auth=basic_auth(user="neo4j", password="123456789"))
 
 folder = r'C:/Users/john/Documents/Neo4j/chongqing/import'
-vertex_file = 'chongqing_vertex_df.csv'
-edge_file = 'chongqing_edge_df.csv'
+# vertex_file = 'chongqing_vertex_df.csv'
+# edge_file = 'chongqing_edge_df.csv'
+vertex_file = 'chongqing_vertex_df_20180820.csv'
+edge_file = 'chongqing_edge_df_20180820.csv'
 target_companies = ['重庆红池药业开发有限公司', '重庆绿华电动车有限公司', '重庆友强门窗有限公司']
 
 vertex = pd.read_csv(os.path.join(folder, vertex_file), encoding='utf8')
@@ -28,12 +30,18 @@ history_edge_df = pd.DataFrame({
     })
 history_edge_df['relation'] = 'history'
 
+same_contact_edge_df = pd.DataFrame({
+    'start_name': ['西双版纳共语咖啡发展有限公司', '普洱共语咖啡进出口有限公司', '重庆红池药业开发有限公司', '重庆宝元中药材种植有限公司'],
+    'end_name': ['普洱共语咖啡进出口有限公司', '西双版纳共语咖啡发展有限公司', '重庆宝元中药材种植有限公司', '重庆红池药业开发有限公司']
+    })
+same_contact_edge_df['relation'] = 'contact'
+
 history_vertex_df = pd.DataFrame({
     'name': history_edge_df.start_name.unique(),
     'label': ['PERSON'] * len(history_edge_df.start_name.unique())
     })
 
-edge = edge.append(history_edge_df)
+edge = edge.append(history_edge_df).append(same_contact_edge_df)
 edge.drop_duplicates(inplace=True)
 vertex = vertex.append(history_vertex_df)
 vertex.drop_duplicates(inplace=True)
